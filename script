@@ -1,0 +1,46 @@
+import pandas as pd
+import numpy as np
+
+# 1. Leitura do CSV
+df = pd.read_csv("dados.csv", sep=";", engine="python")
+
+# 2. Verificação inicial dos dados
+print("Informações gerais:")
+print(df.info())
+print("\nPrimeiras linhas:")
+print(df.head(10))
+print("\nÚltimas linhas:")
+print(df.tail(10))
+
+# 3. Cópia dos dados
+df_copia = df.copy()
+
+# 4. Substituir NaN da coluna 'Calories' por 0
+df_copia['Calories'] = df_copia['Calories'].fillna(0)
+print("\nVerificando 'Calories' tratados:")
+print(df_copia)
+
+# 5. Substituir NaN da coluna 'Date' por '1900/01/01'
+df_copia['Date'] = df_copia['Date'].fillna('1900/01/01')
+print("\nVerificando 'Date' tratados:")
+print(df_copia)
+
+# 6. Substituir '1900/01/01' por NaN novamente
+df_copia['Date'] = df_copia['Date'].replace('1900/01/01', np.nan)
+
+# 7. Corrigir valor '20201226' na coluna 'Date'
+df_copia['Date'] = df_copia['Date'].replace('20201226', '2020/12/26')
+
+# 8. Transformar coluna 'Date' em datetime
+df_copia['Date'] = pd.to_datetime(df_copia['Date'], errors='coerce')
+print("\nDataframe após conversões de data:")
+print(df_copia)
+
+# 9. Remover linhas com valores nulos
+df_copia = df_copia.dropna()
+print("\nDataframe final (sem nulos):")
+print(df_copia)
+
+# 10. Informações finais
+print("\nInformações finais:")
+print(df_copia.info())
